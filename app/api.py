@@ -6,7 +6,7 @@ from app.retriever.embedder import model as embedder
 from app.retriever.vector_store import load_faiss_index, search_clauses
 from app.retriever.evaluator import evaluate
 from app.reasoner.output_generator import format_output
-
+from pydantic import BaseModel
 import os
 
 router = APIRouter()
@@ -23,14 +23,20 @@ except Exception as e:
 
 DOCS_DIR = "app/data/documents"
 
+class QueryRequest(BaseModel):
+    query: str
+    domain: str = "insurance"
+    use_llm: bool = True
 @router.post("/analyze_query")
-async def analyze_query(request: Request):
+async def analyze_query(request: QueryRequest):
     if index is None or not metadata:
-        raise HTTPException(status_code=500, detail="Vector index or metadata not loaded. Please rebuild the index.")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Vector index or metadata not loaded. Please rebuild the index."
+        )
     try:
-        data = await request.json()
-        query_text = data.get("query")
-        domain = data.get("domain", "insurance")
+        query_text = request.query
+        domain = request.domain
 
         if not query_text:
             raise HTTPException(status_code=400, detail="Query is required")
@@ -48,10 +54,11 @@ async def analyze_query(request: Request):
         # Step 4: Output
         return format_output(evaluation, structured)
     except Exception as e:
-        import traceback
-        print("Internal Server Error:", traceback.format_exc())
-        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
-
+        print("Internal Server Error:", str(e))
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Internal Server Error: {str(e)}"
+        )
 @router.post("/upload_document")
 async def upload_document(file: UploadFile = File(...)):
     # Save uploaded file
