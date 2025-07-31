@@ -12,6 +12,7 @@ from app.retriever.chunker import split_text_to_chunks
 from app.retriever.embedder import model as embedder
 
 DOCS_DIR = "app/data/documents"
+os.makedirs(DOCS_DIR, exist_ok=True)  # <-- Ensure the directory exists
 INDEX_PATH = "app/data/embeddings/faiss_index.index"
 META_PATH = "app/data/embeddings/metadata.pkl"
 
@@ -36,6 +37,8 @@ def load_documents(folder_path):
             docs.append((filename, text))
     return docs
 
+# ...existing code...
+
 def build_index():
     print("Loading documents...")
     documents = load_documents(DOCS_DIR)
@@ -54,6 +57,10 @@ def build_index():
             metadata.append(meta)
 
     print(f"Embedding {len(all_chunks)} chunks...")
+    if not all_chunks:
+        print("No document chunks found. Please add valid documents to app/data/documents.")
+        return
+
     embeddings = embedder.encode(all_chunks, show_progress_bar=True)
 
     print("Building FAISS index...")

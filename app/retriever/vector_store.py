@@ -7,6 +7,9 @@ from sentence_transformers import CrossEncoder
 
 EMBED_DIM = 384  # For all-MiniLM-L6-v2
 
+# Initialize cross_encoder globally
+cross_encoder = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
+
 def load_faiss_index(index_path, metadata_path):
     index = faiss.read_index(index_path)
     with open(metadata_path, "rb") as f:

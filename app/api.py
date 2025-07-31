@@ -1,6 +1,6 @@
 # app/api.py
 
-from fastapi import APIRouter, HTTPException, Request, UploadFile, File
+from fastapi import APIRouter, HTTPException, Request, UploadFile, File, Header, status
 from app.parser.ner_model import extract_info
 from app.retriever.embedder import model as embedder
 from app.retriever.vector_store import load_faiss_index, search_clauses
