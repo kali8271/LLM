@@ -1,0 +1,11 @@
+SECTION 1: PARTIES
+This contract is between Alice Smith and Bob Johnson.
+
+SECTION 2: CASE TYPE
+This is a civil case regarding property dispute.
+
+SECTION 3: JURISDICTION
+The case falls under the jurisdiction of Pune District Court.
+
+SECTION 4: OUTCOME
+If the property is found to be rightfully owned by Alice Smith, the court shall order Bob Johnson to vacate the premises within 30 days. 

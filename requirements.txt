@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+spacy  # for advanced NLP extraction
+sentence-transformers
+faiss-cpu
+transformers
+pydantic
+numpy
+scikit-learn
+pdfplumber  # if you want to read PDFs
+python-docx  # for DOCX support
+gradio  # for web UI
+torch  # For transformer models
+python-multipart  # For file uploads
+rank-bm25  # For hybrid search
